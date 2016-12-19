@@ -364,8 +364,18 @@ def _filter(transition_matrices, observation_matrices, transition_covariance,
 
     for t in range(n_timesteps):
         if t == 0:
-            predicted_state_means[t] = initial_state_mean
-            predicted_state_covariances[t] = initial_state_covariance
+            transition_matrix = _last_dims(transition_matrices, t - 1)
+            transition_covariance = _last_dims(transition_covariance, t - 1)
+            transition_offset = _last_dims(transition_offsets, t - 1, ndims=1)
+            predicted_state_means[t], predicted_state_covariances[t] = (
+                _filter_predict(
+                    transition_matrix,
+                    transition_covariance,
+                    transition_offset,
+                    initial_state_mean,
+                    initial_state_covariance
+                )
+            )
         else:
             transition_matrix = _last_dims(transition_matrices, t - 1)
             transition_covariance = _last_dims(transition_covariance, t - 1)
