@@ -1167,7 +1167,7 @@ class KalmanFilter(object):
             [0...n_timesteps-1] given observations up to and including the
             current time step
         """
-        Z = self._parse_observations(X)
+        Z = np.ma.array(X)
 
         (transition_matrices, transition_offsets, transition_covariance,
          observation_matrices, observation_offsets, observation_covariance,
